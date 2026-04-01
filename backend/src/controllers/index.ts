@@ -13,12 +13,7 @@ export const callUser = asyncErrorHandler(async (req, res, next) => {
         name = "Sir",
     } = req.body;
 
-    const [hours, minutes] = time.split(":");
-    const callTime = new Date(date);
-    callTime.setHours(Number(hours), Number(minutes), 0, 0);
-
-    const scheduled_at = callTime.toISOString();
-
+    const scheduled_at = new Date(`${date}T${time}:00+05:30`).toISOString();
     const payload = {
         agent_id: config.BOLNA_AGENT_ID,
         recipient_phone_number: `+91${phone}`,
