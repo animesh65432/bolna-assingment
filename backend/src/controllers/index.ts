@@ -14,6 +14,7 @@ export const callUser = asyncErrorHandler(async (req, res, next) => {
     } = req.body;
 
     const scheduled_at = new Date(`${date}T${time}:00+05:30`).toISOString();
+
     const payload = {
         agent_id: config.BOLNA_AGENT_ID,
         recipient_phone_number: `+91${phone}`,
@@ -89,29 +90,31 @@ export const callUser = asyncErrorHandler(async (req, res, next) => {
 });
 
 export const bolnaWebhook = asyncErrorHandler(async (req, res, next) => {
-    const { execution_id, status, extracted_data } = req.body;
+    const execution_id = req.body.id;
+    const status = req.body.status;
+
+    if (!execution_id) {
+        return res.status(400).json({ error: "Missing id from Bolna" });
+    }
 
     const db = await connectDB();
     const reminders = db.collection("reminders");
 
-    const reminder = await reminders.findOne({ execution_id });
-    if (!reminder) {
-        return res.status(404).json({ error: "Reminder not found" });
-    }
-
-    await reminders.updateOne(
+    const result = await reminders.updateOne(
         { execution_id },
         {
             $set: {
                 status,
-                adherence: extracted_data?.adherence ?? null,
-                notes: extracted_data?.notes ?? null,
                 updated_at: new Date().toISOString(),
             },
         }
     );
 
-    return res.status(200).json({ received: true });
+    if (result.matchedCount === 0) {
+        return res.status(404).json({ error: "Reminder not found" });
+    }
+
+    return res.status(200).json({ success: true });
 });
 
 export const getReminders = asyncErrorHandler(async (req, res, next) => {
