@@ -1,15 +1,25 @@
 import { Reminder } from "./types"
 
-export const todayStr = () => new Date().toISOString().split("T")[0]
+const istHour = () => {
+    return Number(new Date().toLocaleString("en-US", {
+        timeZone: "Asia/Kolkata",
+        hour: "numeric",
+        hour12: false
+    }))
+}
+
+export const todayStr = () => {
+    return new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" })
+}
 
 export const tomorrowStr = () => {
-    const d = new Date()
-    d.setDate(d.getDate() + 1)
-    return d.toISOString().split("T")[0]
+    const tomorrow = new Date()
+    tomorrow.setDate(tomorrow.getDate() + 1)
+    return tomorrow.toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" })
 }
 
 export const greeting = () => {
-    const h = new Date().getHours()
+    const h = istHour()
     if (h < 12) return "Good morning"
     if (h < 17) return "Good afternoon"
     if (h < 21) return "Good evening"
