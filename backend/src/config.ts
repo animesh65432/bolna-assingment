@@ -6,5 +6,6 @@ export const config = {
     BOLNA_API_KEY: process.env.BOLNA_API_KEY || "",
     BOLNA_AGENT_ID: process.env.BOLNA_AGENT_ID || "",
     DATABASE_URL: process.env.DATABASE_URL || "",
-    JWT_SECRET: process.env.JWT_SECRET || ""
+    JWT_SECRET: process.env.JWT_SECRET || "",
+    FRONTEND_URL: process.env.FRONTEND_URL || "http://localhost:3001",
 }

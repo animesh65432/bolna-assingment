@@ -6,7 +6,7 @@ import { config } from "./config"
 const app = express()
 
 app.use(cors({
-    origin: "http://localhost:3001",
+    origin: config.FRONTEND_URL,
     credentials: true
 }))
 
@@ -14,6 +14,5 @@ app.use(express.json())
 
 app.use(router)
 
-app.listen(config.PORT, () => {
-    console.log(`Server is running on port ${config.PORT}`)
-})
+
+export default app
