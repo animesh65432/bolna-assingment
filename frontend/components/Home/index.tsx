@@ -76,6 +76,7 @@ const Home: React.FC = () => {
             }) as { execution_id: string }
 
             const execution_id = response.execution_id
+            const scheduledAt = new Date(`${input.date}T${input.time}`).toISOString()
 
             const newReminder: Reminder = {
                 ...input,
@@ -85,7 +86,7 @@ const Home: React.FC = () => {
                 status: "scheduled",
                 adherence: null,
                 notes: null,
-                scheduled_at: new Date(`${input.date}T${input.time}`).toISOString(),
+                scheduled_at: scheduledAt,
                 created_at: new Date().toISOString(),
             }
             setReminders(prev => [newReminder, ...prev])

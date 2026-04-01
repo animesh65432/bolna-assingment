@@ -62,8 +62,8 @@ export async function Call<T, ResponseType>({
 
         if (axios.isAxiosError(error)) {
             if (error.response) {
-                if (error.response.data.error) {
-                    toast.error(`${error.response.data.error}`);
+                if (error.message) {
+                    toast.error(`${error.message}`);
                 }
                 else {
                     toast.error(`${error.response.data.message}`);
